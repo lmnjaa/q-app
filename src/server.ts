@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as dotenv from 'dotenv';
+import { routes } from './routes/routes';
 
 // Configure dotenvnp
 dotenv.config();
@@ -8,6 +9,7 @@ dotenv.config();
 const app = express();
 
 // Configure routes and middleware
+app.use(routes);
 
 // Start server
 const port = process.env.PORT || 3000;
