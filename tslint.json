@@ -1,0 +1,17 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "no-unused-vars": true,
+        "no-undef": true,
+        "no-shadow": true,
+        "no-use-before-define": true,
+        "no-unused-expressions": true,
+        "no-useless-constructor": true,
+        "no-param-reassign": true,
+        "no-magic-numbers": true,
+        "no-invalid-this": true
+    }
+}
