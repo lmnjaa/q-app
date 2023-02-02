@@ -7,7 +7,7 @@ const AppDataSource = new DataSource({
     username: "root",
     password: "password",
     database: "q-app",
-    entities: [ "entity/*.js" ]
+    entities: [ "../entity/*.js" ]
 })
 
 export class DbConnection {
