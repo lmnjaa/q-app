@@ -1,30 +1,74 @@
-import { Request, Response, NextFunction } from "express";
-import { UserService } from "../services/userService";
-import { ResponseEntity } from "../utils/responseEntity";
-import * as ResponseMessages from '../constants/constats';
+import { UserService } from "../Services/UserService";
+import { Request, Response } from "express";
+import { inject, injectable } from "inversify";
+import DependencyTypes from "../Common/DependencyTypes";
+import { IUserService } from "../Services/interface/IUserService";
+import { ResponseEntity } from "../Utils/ResponseEntity";
+import * as ResponseMessage from '../Constants/constats';
 
+@injectable()
 export class UserController {
-    static async getUsers(req: Request, res: Response, next: NextFunction) {
-        try {
-            const data = await UserService.getAllUsers();
-            if(data) return new ResponseEntity(data, ResponseMessages.Successful, 200);
-
-            return new ResponseEntity(data, ResponseMessages.EmptyData, 404);
-        } catch (error) {
-            return new ResponseEntity(error, ResponseMessages.ServerError, 500);
-        }
+    private readonly _userService: UserService;
+    constructor(
+        @inject(DependencyTypes.IUserService) userService: IUserService
+    ) {
+        this._userService = userService;
     }
 
-    static async getUser(req: Request, res: Response, next: NextFunction) {
-        let id: any = req.params.id;
-
+    public getUsers = async (req: Request, res: Response) => {
         try {
-            const data = await UserService.getUser(id);
-            if(data) return new ResponseEntity(data, ResponseMessages.Successful, 200);
+            const data = await this._userService.getAll();
 
-            return new ResponseEntity(data, ResponseMessages.EmptyData, 404);
+            if(data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            
+            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
-            return new ResponseEntity(error, ResponseMessages.ServerError, 500);
+            return res.send(new ResponseEntity([], error.message, 500));
         }
-    }
+    };
+
+    public getUser = async (req: Request, res: Response) => {
+        try {
+            const data = await this._userService.getById(req.body);
+            if(data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            
+            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+        } catch (error) {
+            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+        }
+    };
+
+    public createUser = async (req: Request, res: Response) => {
+        try {
+            const data = await this._userService.create(req.body);
+            if(data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            
+            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+        } catch (error) {
+            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+        }
+    };
+
+    public updateUser = async (req: Request, res: Response) => {
+        try {
+            const data = await this._userService.update(req.body);
+            if(data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            
+            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+        } catch (error) {
+            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+        }
+    };
+
+    public deleteUser = async (req: Request, res: Response) => {
+        try {
+            const data = await this._userService.delete(req.body);
+            if(data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            
+            return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
+            
+        } catch (error) {
+            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+        }
+    };
 }
