@@ -1,23 +1,25 @@
+import "reflect-metadata"
 import { DataSource } from "typeorm"
+import { BookEntity } from "../entity/BookEntity";
+import { UserEntity } from "../entity/UserEntity";
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
+    synchronize: true,
     type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "password",
-    database: "q-app",
-    entities: [ "../entity/*.js" ]
-})
+    host: process.env.MYSQL_HOST ?? "localhost",
+    port: parseInt(process.env.MYSQL_PORT) ?? 3306,
+    username: process.env.MYSQL_USERNAME ?? "root",
+    password: process.env.MYSQL_PASSWORD ?? "password",
+    database: process.env.MYSQL_DATABASE ?? "q-app",
+    entities: [BookEntity, UserEntity]
+});
 
-export class DbConnection {
-    static initDb() {
-        AppDataSource.initialize()
-            .then(() => {
-                console.log("Data Source has been initialized!")
-            })
-            .catch((err) => {
-                console.error("Error during Data Source initialization", err)
-            })
-    }
+export const initDbConnection = () => {
+    AppDataSource.initialize()
+        .then(() => {
+            console.log('[DATABASE] Database connection successfully.');
+        })
+        .catch((error) => {
+            console.log('[DATABASE] Error while connection to DB. | Error : ', error);
+        })
 }
