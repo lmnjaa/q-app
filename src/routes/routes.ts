@@ -1,9 +1,15 @@
-import { Router } from 'express';
-import { UserController } from '../controllers/userController';
+import container from '../InversionOfControl/DiContainer';
+import DependencyTypes from '../Common/DependencyTypes';
+import { UserController } from '../Controllers/UserController';
 
-const router: Router = Router();
+export default(app) => {
+    // Controllers
+    const userController: UserController = container.get(DependencyTypes.UserController);
 
-router.use('/api/users', UserController.getUsers);
-router.use('/api/users/:id', UserController.getUser);
-
-export const routes: Router = router;
+    // Endpoints
+    app.get('/api/users', userController.getUsers);
+    app.get('/api/user/:id', userController.getUser);
+    app.post('/api/user/update', userController.updateUser);
+    app.post('/api/user/create', userController.createUser);
+    app.post('/api/user/delete/:id', userController.deleteUser);
+}

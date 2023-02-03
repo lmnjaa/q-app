@@ -1,8 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Book } from './bookEntity';
+import { BookEntity } from './BookEntity';
+import IEntity from './IEntity';
 
-@Entity('users')
-export class User {
+@Entity({ name: "Users" })
+export class UserEntity implements IEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,6 +19,6 @@ export class User {
   @Column()
   role: string;
 
-  @OneToMany(type => Book, book => book.user)
-  books: Book[];
+  @OneToMany(() => BookEntity, (book: BookEntity) => book.user)
+  books: BookEntity[];
 }
