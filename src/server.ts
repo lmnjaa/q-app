@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 import * as dbConnect from './Db/DBConnection';
 
 import router from './Routes/Routes';
-import bodyParser = require('body-parser');
+import * as bodyParser from 'body-parser';
 
 // Configure dotenvnp
 dotenv.config();
