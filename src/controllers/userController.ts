@@ -8,7 +8,7 @@ import * as ResponseMessage from '../Constants/constats';
 
 @injectable()
 export class UserController {
-    private readonly _userService: UserService;
+    private readonly _userService: IUserService;
     constructor(
         @inject(DependencyTypes.IUserService) userService: IUserService
     ) {
@@ -28,13 +28,14 @@ export class UserController {
     };
 
     public getUser = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const data = await this._userService.getById(req.body);
+            const data = await this._userService.getById(parseInt(id));
             if(data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
             
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
-            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+            return res.send(new ResponseEntity([], error.message, 500));
         }
     };
 
@@ -45,7 +46,7 @@ export class UserController {
             
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
-            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+            return res.send(new ResponseEntity([], error.message, 500));
         }
     };
 
@@ -56,19 +57,20 @@ export class UserController {
             
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
-            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+            return res.send(new ResponseEntity([], error.message, 500));
         }
     };
 
     public deleteUser = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const data = await this._userService.delete(req.body);
+            const data = await this._userService.delete(parseInt(id));
             if(data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
             
             return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
             
         } catch (error) {
-            return res.send(new ResponseEntity([], ResponseMessage.ServerError, 500));
+            return res.send(new ResponseEntity([], error.message, 500));
         }
     };
 }

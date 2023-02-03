@@ -1,43 +1,59 @@
-import { AppDataSource } from '../Db/DBConnection';
-import { UserEntity } from '../Entity/UserEntity';
-import { injectable } from 'inversify';
+
+import { inject, injectable } from 'inversify';
 import { IUserService } from './interface/IUserService';
+import { IMysqlService } from './interface/IMysqlService';
+import DependencyTypes from '../Common/DependencyTypes';
+import userQueries from '../Constants/userQueries';
+import { User } from '../Models/UserModel';
 
 @injectable()
 export class UserService implements IUserService {
-    getAll(): Promise<UserEntity[]> {
-        const myRepository = AppDataSource.getRepository(UserEntity);
-        return myRepository.find();
+
+    private readonly _mysqlservice: IMysqlService;
+
+    constructor(
+        @inject(DependencyTypes.IMysqlService) mysqlService: IMysqlService,
+    ) {
+        this._mysqlservice = mysqlService;
+    }
+    
+    async getAll(): Promise<User[]> {
+        const rows: any = await this._mysqlservice.execute<User[]>(userQueries.findAll, []);
+
+        if(rows.length <= 0) return [];
+
+        return rows;
     }
 
-    getById(id: number): Promise<UserEntity | undefined> {
-        const myRepository = AppDataSource.getRepository(UserEntity);
-        return myRepository.findOneBy({ id: id });
+    async getById(id: number): Promise<User> {
+        if(!id) return;
+
+        const rows: any = await this._mysqlservice.execute<User>(userQueries.findById, [id]);
+        if(rows.length <= 0) return undefined;
+        return rows;
     }
 
-    create(entity: UserEntity): Promise<UserEntity> {
-        const myRepository = AppDataSource.getRepository(UserEntity);
-        return myRepository.save(entity);
+    async create(entity: User): Promise<User> {
+        if(!entity) return;
+
+        const rows: any = await this._mysqlservice.execute<User>(userQueries.create, [entity.firstName, entity.lastName, entity.email, entity.role]);
+
+        if(rows.length <= 0) return;
+
+        return rows;
     }
 
-    update(entity: UserEntity): Promise<UserEntity> {
-        const myRepository = AppDataSource.getRepository(UserEntity);
-        const updatedEntity = myRepository.merge(entity, entity);
-        return myRepository.save(updatedEntity);
+    async update(entity: User): Promise<User> {
+        throw new Error('Method not implemented.');
     }
 
-    delete(id: number): Promise<any> {
-        let result;
+    async delete(id: number): Promise<any> {
+        if(!id) return;
 
-        const myRepository = AppDataSource.getRepository(UserEntity);
-        myRepository.delete(id)
-            .then((response) => {
-                result = response.affected;
-            })
-            .catch((error) => {
-                result = error;
-            });
+        const rows: any = await this._mysqlservice.execute<any>(userQueries.delete, [id]);
 
-        return result;
+        if(rows.length <= 0) return;
+        return rows;
     }
+   
 }

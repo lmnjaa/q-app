@@ -2,25 +2,25 @@ import "reflect-metadata";
 
 import * as express from 'express';
 import * as dotenv from 'dotenv';
-import * as dbConnect from './Db/DBConnection';
 
 import router from './Routes/Routes';
 import * as bodyParser from 'body-parser';
+import MysqlService from "./Services/MysqlService";
 
 // Configure dotenvnp
 dotenv.config();
 
 // Db connection
-dbConnect.initDbConnection();
+new MysqlService().setup();
 
 // Create express app
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configure routes and middleware
 router(app);
 
 // Start server
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`[SERVER] Server listening on port ${port}`));
+app.listen(port, () => console.log([`💾 SERVER successfully listening on port ${port}`]));
