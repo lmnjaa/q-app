@@ -5,6 +5,7 @@ import { IUserService } from "../Services/interface/IUserService";
 import { ResponseEntity } from "../Utils/ResponseEntity";
 import * as ResponseMessage from '../Constants/constats';
 import { validateId, validateRequest } from "../Utils/RequestValidation";
+import { decodeJwt } from "../Middlewares/IsAuth";
 
 @injectable()
 export class UserController {
@@ -51,9 +52,9 @@ export class UserController {
 
         try {
             const data = await this._userService.create(firstName, lastName, email, isAdmin, username, password);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            if (data) return res.send(new ResponseEntity(data, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+            return res.send(new ResponseEntity(data, data.responseMessage, data.responseCode));
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
         }
@@ -67,9 +68,9 @@ export class UserController {
 
         try {
             const data = await this._userService.update(id, firstName, lastName, email, isAdmin, username, password);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            if (data) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+            return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
         }
@@ -81,9 +82,9 @@ export class UserController {
 
         try {
             const data = await this._userService.delete(parseInt(id));
-            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            if (data.responseData) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
+            return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
@@ -91,14 +92,16 @@ export class UserController {
     };
 
     public deactivateUser = async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const { id, User_id } = req.params;
+        const decodedJwt = decodeJwt(req);
+
         if (!validateId(id)) return res.send(new ResponseEntity([], ResponseMessage.InvalidParameter, 400));
 
         try {
-            const data = await this._userService.deactive(parseInt(id));
-            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            const data = await this._userService.deactive(decodedJwt, parseInt(id), parseInt(User_id));
+            if (data.responseData) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
+            return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));

@@ -5,17 +5,19 @@ export class User implements BaseModel{
     firstName: string;
     lastName: string;
     email: string;
-    role: boolean;
+    isAdmin: boolean;
     username: string;
     password: string;
+    active: boolean;
 
-    constructor(id: number, firstName: string, lastName: string, email: string, role: boolean, username: string, password: string){
+    constructor(id: number, firstName: string, lastName: string, email: string, isAdmin: boolean, username: string, password: string, active: boolean){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
+        this.isAdmin = isAdmin;
         this.username = username;
         this.password = password;
+        this.active = active;
     }
 }

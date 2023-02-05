@@ -5,6 +5,7 @@ import { ResponseEntity } from "../Utils/ResponseEntity";
 import * as ResponseMessage from '../Constants/constats';
 import { validateId, validateRequest } from "../Utils/RequestValidation";
 import { IBookService } from "../Services/interface/IBookService";
+import { decodeJwt } from "../Middlewares/IsAuth";
 
 @injectable()
 export class BookController {
@@ -12,7 +13,7 @@ export class BookController {
     private readonly _bookService: IBookService;
 
     constructor(
-        @inject(DependencyTypes.IUserService) bookService: IBookService
+        @inject(DependencyTypes.IBookService) bookService: IBookService
     ) {
         this._bookService = bookService;
     }
@@ -45,15 +46,16 @@ export class BookController {
 
     public createBook = async (req: Request, res: Response) => {
         const { title, publisher, User_id } = req.body;
+        const decodedJwt = decodeJwt(req);
 
         if (!validateRequest([title, publisher, User_id]))
             return res.send(new ResponseEntity([], ResponseMessage.InvalidParameter, 400));
 
         try {
-            const data = await this._bookService.create(title, publisher, User_id);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            const data = await this._bookService.create(decodedJwt, title, publisher, User_id);
+            if (data) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+            return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
         }
@@ -61,29 +63,32 @@ export class BookController {
 
     public updateBook = async (req: Request, res: Response) => {
         const { id, title, publisher, User_id } = req.body;
+        const decodedJwt = decodeJwt(req);
 
         if (!validateRequest([title, publisher, User_id]))
             return res.send(new ResponseEntity([], ResponseMessage.InvalidParameter, 400));
 
         try {
-            const data = await this._bookService.update(id, title, publisher, User_id);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            const data = await this._bookService.update(decodedJwt, id, title, publisher, User_id);
+            if (data) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
+            return res.send(new ResponseEntity(data, data.responseMessage, data.responseCode));
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
         }
     };
 
     public deleteBook = async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const { id, User_id } = req.params;
+        const decodedJwt = decodeJwt(req);
+
         if (!validateId(id)) return res.send(new ResponseEntity([], ResponseMessage.InvalidParameter, 400));
 
         try {
-            const data = await this._bookService.delete(parseInt(id));
-            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
+            const data = await this._bookService.delete(decodedJwt, parseInt(id), parseInt(User_id));
+            if (data) return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
-            return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
+            return res.send(new ResponseEntity(data.responseData, data.responseMessage, data.responseCode));
 
         } catch (error) {
             return res.send(new ResponseEntity([], error.message, 500));
