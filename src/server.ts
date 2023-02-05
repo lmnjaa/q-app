@@ -8,6 +8,10 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import MysqlService from "./Services/MysqlService";
 
+// Swagger
+import * as swaggerUi from 'swagger-ui-express';
+import * as swaggerJsonDocument from '../swagger.json';
+
 // Configure dotenvnp
 dotenv.config();
 
@@ -22,6 +26,7 @@ app.use(cookieParser());
 
 // Configure routes and middleware
 router(app);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJsonDocument));
 
 // Start server
 const port = process.env.PORT || 8080;
