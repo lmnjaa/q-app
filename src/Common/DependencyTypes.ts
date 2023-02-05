@@ -5,4 +5,5 @@ export default {
     IAuthService: "IAuthService",
     UserController: "UserController",
     AuthController: "AuthController",
+    BookController: "BookController",
 }

@@ -1,4 +1,3 @@
-
 import { inject, injectable } from 'inversify';
 import { IUserService } from './interface/IUserService';
 import { IMysqlService } from './interface/IMysqlService';
