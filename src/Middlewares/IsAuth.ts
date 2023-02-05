@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ResponseEntity } from "../Utils/ResponseEntity";
-import * as Constants from '../Constants/Constats';
+import * as Constants from '../Constants/Constants';
 import * as jwt from 'jsonwebtoken';
 import { JwtDecodeClass } from "../Utils/JwtDecodeClass";
 

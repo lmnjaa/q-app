@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
 import { ResponseEntity } from "../Utils/ResponseEntity";
-import * as ResponseMessage from '../Constants/constats';
+import * as ResponseMessage from '../Constants/Constants';
 import { validateId, validateRequest } from "../Utils/RequestValidation";
-import { IBookService } from "../Services/interface/IBookService";
+import { IBookService } from "../Services/Interface/IBookService";
 import { decodeJwt } from "../Middlewares/IsAuth";
 
 @injectable()

@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 import { Pool, createPool, MysqlError } from 'mysql'
-import { IMysqlService } from '../Services/interface/IMysqlService'
+import { IMysqlService } from './Interface/IMysqlService'
 
 let pool: Pool
 

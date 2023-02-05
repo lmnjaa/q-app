@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
-import { IUserService } from "../Services/interface/IUserService";
+import { IUserService } from "../Services/Interface/IUserService";
 import { ResponseEntity } from "../Utils/ResponseEntity";
-import * as ResponseMessage from '../Constants/constats';
+import * as ResponseMessage from '../Constants/Constants';
 import { validateId, validateRequest } from "../Utils/RequestValidation";
 import { decodeJwt } from "../Middlewares/IsAuth";
 

@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { IMysqlService } from './interface/IMysqlService';
+import { IMysqlService } from './Interface/IMysqlService';
 import DependencyTypes from '../Common/DependencyTypes';
-import { IBookService } from './interface/IBookService';
+import { IBookService } from './Interface/IBookService';
 import { Book } from '../Models/BookModel';
 import BookQueries from '../Constants/BookQueries';
 import { JwtDecodeClass } from '../Utils/JwtDecodeClass';
-import { IUserService } from './interface/IUserService';
+import { IUserService } from './Interface/IUserService';
 import { RES_TYPE, ServiceResponse } from '../Utils/ServiceResponse';
 import { JwtChecker } from '../Utils/RequestValidation';
 
