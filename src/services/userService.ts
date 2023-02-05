@@ -60,6 +60,9 @@ export class UserService implements IUserService {
     }
 
     async delete(id: number): Promise<ServiceResponse> {
+        const user = await this.getById(id);
+        if (user.isAdmin && user.active) return new ServiceResponse(RES_TYPE.ERROR, "You can not delete active admin", [], 500);
+
         const rows: any = await this._mysqlservice.execute<any>(userQueries.delete, [id]);
 
         if (rows.length <= 0) return new ServiceResponse(RES_TYPE.ERROR, "There is something wrong deleting from db", [], 500);
