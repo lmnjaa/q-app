@@ -2,7 +2,7 @@ import container from '../InversionOfControl/DiContainer';
 import DependencyTypes from '../Common/DependencyTypes';
 import { UserController } from '../Controllers/UserController';
 import { AuthController } from '../Controllers/AuthController';
-import { isAuth } from '../Middlewares/IsAuth';
+import { isAdmin } from '../Middlewares/IsAuth';
 import { BookController } from '../Controllers/BookController';
 
 export default (app) => {
@@ -14,9 +14,9 @@ export default (app) => {
     // Users
     app.get('/api/users', userController.getUsers);
     app.get('/api/user/:id', userController.getUser);
-    app.post('/api/user/update', userController.updateUser);
-    app.post('/api/user/create', userController.createUser);
-    app.post('/api/user/delete/:id', userController.deleteUser);
+    app.post('/api/user/update', isAdmin, userController.updateUser);
+    app.post('/api/user/create', isAdmin, userController.createUser);
+    app.post('/api/user/delete/:id', isAdmin, userController.deleteUser);
     app.post('/api/user/deactivate/:id', userController.deactivateUser);
 
     // Books

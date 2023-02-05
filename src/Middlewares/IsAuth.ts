@@ -3,7 +3,7 @@ import { ResponseEntity } from "../Utils/ResponseEntity";
 import * as Constants from '../Constants/Constats';
 import * as jwt from 'jsonwebtoken';
 
-export const isAuth = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const { JWT_SECRET_KEY } = process.env;
     const token = req.cookies.JwtCookie;
 

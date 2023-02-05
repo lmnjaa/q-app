@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { AuthService } from "../Services/AuthService";
 import { IAuthService } from "../Services/interface/IAuthService";
-import { validateUserEntity, validateUsernameAndPassworwd } from "../Utils/RequestValidation";
+import { validateUsernameAndPassworwd } from "../Utils/RequestValidation";
 import { ResponseEntity } from "../Utils/ResponseEntity";
 import { RES_TYPE } from "../Utils/ServiceResponse";
 import DependencyTypes from "../Common/DependencyTypes";
