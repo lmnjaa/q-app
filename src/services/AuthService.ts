@@ -2,7 +2,6 @@ import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
 import userQueries from "../Constants/userQueries";
 import { User } from "../Models/UserModel";
-import { validateUserEntity, validateUsernameAndPassworwd } from "../Utils/RequestValidation";
 import { IAuthService } from "./interface/IAuthService";
 import { IMysqlService } from "./interface/IMysqlService";
 import * as bcrypt from 'bcrypt';
