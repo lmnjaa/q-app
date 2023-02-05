@@ -4,16 +4,23 @@ import DependencyTypes from '../Common/DependencyTypes';
 import { IBookService } from './interface/IBookService';
 import { Book } from '../Models/BookModel';
 import BookQueries from '../Constants/BookQueries';
+import { JwtDecodeClass } from '../Utils/JwtDecodeClass';
+import { IUserService } from './interface/IUserService';
+import { RES_TYPE, ServiceResponse } from '../Utils/ServiceResponse';
+import { JwtChecker } from '../Utils/RequestValidation';
 
 @injectable()
 export class BookService implements IBookService {
 
     private readonly _mysqlservice: IMysqlService;
+    private readonly _userService: IUserService;
 
     constructor(
         @inject(DependencyTypes.IMysqlService) mysqlService: IMysqlService,
+        @inject(DependencyTypes.IUserService) userService: IUserService
     ) {
         this._mysqlservice = mysqlService;
+        this._userService = userService;
     }
 
     async getAll(): Promise<Book[]> {
@@ -32,30 +39,38 @@ export class BookService implements IBookService {
         return rows;
     }
 
-    async create(title: string, publisher: string, User_id: number): Promise<Book> {
+    async create(token: JwtDecodeClass, title: string, publisher: string, User_id: number): Promise<ServiceResponse> {
+        if (JwtChecker(token, User_id)) return new ServiceResponse(RES_TYPE.ERROR, "You can not add to another author book", [], 401);
+
+        const user: any = await this._userService.getById(User_id);
+        if (user == undefined) return new ServiceResponse(RES_TYPE.ERROR, `There is no user by that id.`, [], 404);
+
         const rows: any = await this._mysqlservice
             .execute<Book>(BookQueries.create, [title, publisher, User_id]);
 
-        if (rows.length <= 0) return;
+        if (rows.length <= 0) return new ServiceResponse(RES_TYPE.ERROR, "Something went wront with db. Please try again later", [],  500);
 
-        return rows;
+        return new ServiceResponse(RES_TYPE.SUCCESS, "Successfully created book", rows, 200);
     }
 
-    async update(id: string, title: string, publisher: string, User_id: number): Promise<Book> {
+    async update(token: JwtDecodeClass, id: string, title: string, publisher: string, User_id: number): Promise<ServiceResponse> {
+        if (JwtChecker(token, User_id)) return new ServiceResponse(RES_TYPE.ERROR, "Unauthorized.", [], 401);
+
         const rows: any = await this._mysqlservice
             .execute<Book>(BookQueries.update, [title, publisher, User_id, id]);
 
-        if (rows.length <= 0) return;
+        if (rows.length <= 0) return new ServiceResponse(RES_TYPE.ERROR, "Something went wront with db. Please try again later", [], 500);
 
-        return rows;
+        return new ServiceResponse(RES_TYPE.SUCCESS, "Successfully created book", rows, 200);
     }
 
-    async delete(id: number): Promise<any> {
+    async delete(token: JwtDecodeClass, id: number, User_id: number): Promise<ServiceResponse> {
         if (!id) return;
+        if (JwtChecker(token, User_id)) return new ServiceResponse(RES_TYPE.ERROR, "Unauthorized", [], 401);
 
         const rows: any = await this._mysqlservice.execute<any>(BookQueries.delete, [id]);
 
-        if (rows.length <= 0) return;
-        return rows;
+        if (rows.length <= 0) return new ServiceResponse(RES_TYPE.ERROR, "Something went wront with db. Please try again later", [], 500);
+        return new ServiceResponse(RES_TYPE.SUCCESS, "Successfully created book", rows, 200);
     }
 }

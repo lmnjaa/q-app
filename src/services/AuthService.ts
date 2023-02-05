@@ -23,13 +23,13 @@ export class AuthService implements IAuthService {
         const rows: any = await this._mysqlservice.execute<User>(userQueries.findByUsername, [username]);
 
         if (await bcrypt.compare(password, rows[0].password)) {
-            const token = jwt.sign({ _id: rows[0].id?.toString(), username: rows[0].username, role: rows[0].isAdmin }, JWT_SECRET_KEY, {
+            const token = jwt.sign({ id: rows[0].id?.toString(), username: rows[0].username, role: rows[0].isAdmin }, JWT_SECRET_KEY, {
                 expiresIn: '2h',
             });
 
-            return new ServiceResponse(RES_TYPE.SUCCESS, ResponseMessage.Successfull, token);
+            return new ServiceResponse(RES_TYPE.SUCCESS, ResponseMessage.Successfull, token, 200);
         }
 
-        return new ServiceResponse(RES_TYPE.ERROR, ResponseMessage.InvalidPassword, '');
+        return new ServiceResponse(RES_TYPE.ERROR, ResponseMessage.InvalidPassword, [], 401);
     }
 }
