@@ -1,6 +1,8 @@
 export default {
     IUserService: "IUserService",
     IBookService: "IBookService",
+    IMysqlService: "IMysqlService",
+    IAuthService: "IAuthService",
     UserController: "UserController",
-    IMysqlService: "IMysqlService"
+    AuthController: "AuthController",
 }

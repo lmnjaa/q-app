@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 
 import router from './Routes/Routes';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import MysqlService from "./Services/MysqlService";
 
 // Configure dotenvnp
@@ -17,6 +18,7 @@ new MysqlService().setup();
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Configure routes and middleware
 router(app);
