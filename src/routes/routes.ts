@@ -2,6 +2,7 @@ import container from '../InversionOfControl/DiContainer';
 import DependencyTypes from '../Common/DependencyTypes';
 import { UserController } from '../Controllers/UserController';
 import { AuthController } from '../Controllers/AuthController';
+import { isAuth } from '../Middlewares/IsAuth';
 
 export default(app) => {
     // Controllers

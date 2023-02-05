@@ -21,7 +21,7 @@ export class UserController {
         try {
             const data = await this._userService.getAll();
 
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
@@ -35,7 +35,7 @@ export class UserController {
 
         try {
             const data = await this._userService.getById(parseInt(id));
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
@@ -51,7 +51,7 @@ export class UserController {
 
         try {
             const data = await this._userService.create(firstName, lastName, email, isAdmin, username, password);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
@@ -67,7 +67,7 @@ export class UserController {
 
         try {
             const data = await this._userService.update(id, firstName, lastName, email, isAdmin, username, password);
-            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.EmptyData, 404));
         } catch (error) {
@@ -81,7 +81,7 @@ export class UserController {
 
         try {
             const data = await this._userService.delete(parseInt(id));
-            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
 
@@ -96,7 +96,7 @@ export class UserController {
 
         try {
             const data = await this._userService.deactive(parseInt(id));
-            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successful, 200));
+            if (data > 1) return res.send(new ResponseEntity(data, ResponseMessage.Successfull, 200));
 
             return res.send(new ResponseEntity(data, ResponseMessage.NoDataByThatId, 404));
 

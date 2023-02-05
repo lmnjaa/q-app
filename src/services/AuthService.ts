@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
 import userQueries from "../Constants/userQueries";
 import { User } from "../Models/UserModel";
-import { validateUserEntity } from "../Utils/RequestValidation";
+import { validateUserEntity, validateUsernameAndPassworwd } from "../Utils/RequestValidation";
 import { IAuthService } from "./interface/IAuthService";
 import { IMysqlService } from "./interface/IMysqlService";
 import * as bcrypt from 'bcrypt';
@@ -20,13 +20,11 @@ export class AuthService implements IAuthService {
         this._mysqlservice = mysqlService;
     }
     async login(username: string, password: string): Promise<ServiceResponse> {
-        if (!validateUserEntity(username, password)) return;
-
         const { JWT_SECRET_KEY } = process.env;
         const rows: any = await this._mysqlservice.execute<User>(userQueries.findByUsername, [username]);
 
-        if (await bcrypt.compare(password, rows.password)) {
-            const token = jwt.sign({ _id: rows.id?.toString(), name: rows.name, role: rows.role }, JWT_SECRET_KEY, {
+        if (await bcrypt.compare(password, rows[0].password)) {
+            const token = jwt.sign({ _id: rows[0].id?.toString(), username: rows[0].username, role: rows[0].isAdmin }, JWT_SECRET_KEY, {
                 expiresIn: '2h',
             });
 
