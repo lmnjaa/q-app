@@ -1,0 +1,10 @@
+export const Successfull = "Successfully";
+export const SuccessfullLogin = "You have been loged in";
+export const NotAuthorized = "You are not authorized, please login";
+export const EmptyData = "There is no data to retrieve";
+export const ServerError = "There is something wrong with the server. Please try again later"
+export const NoDataByThatId = "There is no data by that id";
+export const InvalidParameter = "Parameter is invalid";
+export const InvalidPassword = "Password is not valid";
+export const JwtCookie = "JwtCookie";
+export const SuccessfulLogout = "You have been successfully log out";
