@@ -1,7 +1,9 @@
-FROM node:12.22-alpine 
+FROM node:latest
 WORKDIR /app
-COPY package.json package.json 
+ADD package.json /app/package.json
 RUN npm install
-COPY .env .env
-COPY . /app
-CMD ["node", "dist/index.js"]
+ADD . /app
+RUN npm run tsc
+ADD .env /app
+ENV NODE_ENV=production
+CMD ["node", "dist/src/index.js"]

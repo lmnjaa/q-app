@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
-import userQueries from "../Constants/userQueries";
+import userQueries from "../Constants/UserQueries";
 import { User } from "../Models/UserModel";
 import { IAuthService } from "./Interface/IAuthService";
 import { IMysqlService } from "./Interface/IMysqlService";

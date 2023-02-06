@@ -1,7 +1,36 @@
-version: '3.0'
+version: '3'
+
 services:
-  app:
-    container_name: app
-    build: ./
+  db:
+    container_name: q-db
+    image: mysql
     ports:
-      - 8080:8080
+      - "3306:3306"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    networks:
+      - qapp_network
+  app:
+    container_name: q-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - "8000:8000"
+    networks:
+      - qapp_network
+
+networks:
+  qapp_network:
+    driver: bridge
+
+volumes:
+  q-data:
