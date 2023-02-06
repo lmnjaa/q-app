@@ -6,10 +6,10 @@ import { BookController } from '../Controllers/BookController';
 import { UserController } from '../Controllers/UserController';
 import { AuthService } from '../Services/AuthService';
 import { BookService } from '../Services/BookService';
-import { IAuthService } from '../Services/interface/IAuthService';
-import { IBookService } from '../Services/interface/IBookService';
-import { IMysqlService } from '../Services/interface/IMysqlService';
-import { IUserService } from '../Services/interface/IUserService';
+import { IAuthService } from '../Services/Interface/IAuthService';
+import { IBookService } from '../Services/Interface/IBookService';
+import { IMysqlService } from '../Services/Interface/IMysqlService';
+import { IUserService } from '../Services/Interface/IUserService';
 import { UserService } from '../Services/UserService';
 
 const container = new Container();

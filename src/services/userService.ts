@@ -1,11 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { IUserService } from './interface/IUserService';
-import { IMysqlService } from './interface/IMysqlService';
+import { IUserService } from './Interface/IUserService';
+import { IMysqlService } from './Interface/IMysqlService';
 import DependencyTypes from '../Common/DependencyTypes';
-import userQueries from '../Constants/userQueries';
+import userQueries from '../Constants/UserQueries';
 import { User } from '../Models/UserModel';
 import * as bcrypt from 'bcrypt';
-import { ResponseEntity } from '../Utils/ResponseEntity';
 import { RES_TYPE, ServiceResponse } from '../Utils/ServiceResponse';
 import { JwtChecker } from '../Utils/RequestValidation';
 import { JwtDecodeClass } from '../Utils/JwtDecodeClass';

@@ -1,12 +1,12 @@
 import { inject, injectable } from "inversify";
 import DependencyTypes from "../Common/DependencyTypes";
-import userQueries from "../Constants/userQueries";
+import userQueries from "../Constants/UserQueries";
 import { User } from "../Models/UserModel";
-import { IAuthService } from "./interface/IAuthService";
-import { IMysqlService } from "./interface/IMysqlService";
+import { IAuthService } from "./Interface/IAuthService";
+import { IMysqlService } from "./Interface/IMysqlService";
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import * as ResponseMessage from '../Constants/Constats';
+import * as ResponseMessage from '../Constants/Constants';
 import { RES_TYPE, ServiceResponse } from "../Utils/ServiceResponse";
 
 @injectable()

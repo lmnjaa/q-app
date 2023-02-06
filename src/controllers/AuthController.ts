@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { AuthService } from "../Services/AuthService";
-import { IAuthService } from "../Services/interface/IAuthService";
+import { IAuthService } from "../Services/Interface/IAuthService";
 import { validateUsernameAndPassworwd } from "../Utils/RequestValidation";
 import { ResponseEntity } from "../Utils/ResponseEntity";
 import { RES_TYPE } from "../Utils/ServiceResponse";
 import DependencyTypes from "../Common/DependencyTypes";
-import * as Constants from '../Constants/Constats';
+import * as Constants from '../Constants/Constants';
 import * as jwt from 'jsonwebtoken';
 
 @injectable()
