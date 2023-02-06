@@ -11,6 +11,7 @@ import MysqlService from "./Services/MysqlService";
 // Swagger
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerJsonDocument from '../swagger.json';
+const swaggerAutogen = require('swagger-autogen')();
 
 // Configure dotenvnp
 dotenv.config();
