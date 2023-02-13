@@ -1,2 +1,2 @@
 # q-app
-NodeJS TypeScript Application For Q Agency
+NodeJS TypeScript Application
